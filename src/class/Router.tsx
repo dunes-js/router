@@ -15,7 +15,7 @@ export class Router {
 	constructor(public config: RouterConfig) {
     this.#views = new Map<string, ViewConst>()
     this.config.pages = config.pages.map(page => {
-      return page.replace(/\/(index)?\/?$/, "")
+      return page
     })
   }
   
