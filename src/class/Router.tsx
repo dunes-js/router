@@ -10,29 +10,36 @@ export class Router {
 	latestView?: View
 
 
-	#views = new Map<string, ViewConst>();
-	get root(): HTMLElement {
-		const root = document.querySelector<HTMLElement>(
-			this.config.root
-		);
-		if (!root) {
-			throw `${this.config.root} was not found`
-		}
-		return root;
-	}
-	get link(): HTMLLinkElement {
-		const link = document.querySelector<HTMLLinkElement>(
-			this.config.rootStyles
-		);
-		if (!link) {
-			throw `${this.config.rootStyles} was not found`
-		}
-		if (link.tagName !== "LINK")
-			throw `${this.config.rootStyles} is not a link`
-		return link;
-	}
+	#views;
 
-	constructor(public config: RouterConfig) {}
+	constructor(public config: RouterConfig) {
+    this.#views = new Map<string, ViewConst>()
+    this.config.pages = config.pages.map(page => {
+      return page.replace(/\/(index)?\/?$/, "")
+    })
+  }
+  
+  get root(): HTMLElement {
+    const root = document.querySelector<HTMLElement>(
+      this.config.root
+    );
+    if (!root) {
+      throw `${this.config.root} was not found`
+    }
+    return root;
+  }
+ 
+  get link(): HTMLLinkElement {
+    const link = document.querySelector<HTMLLinkElement>(
+      this.config.rootStyles
+    );
+    if (!link) {
+      throw `${this.config.rootStyles} was not found`
+    }
+    if (link.tagName !== "LINK")
+      throw `${this.config.rootStyles} is not a link`
+    return link;
+  }
 
 	start() {
 		window.onpopstate = () => {
